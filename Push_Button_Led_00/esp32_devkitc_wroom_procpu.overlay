@@ -1,0 +1,14 @@
+/ {
+    led {
+        compatible = "gpio-leds";
+        ext_led: external_led {
+            gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;
+        };
+    };
+    buttons {
+        compatible = "gpio-keys";
+        pot_button: potentiometer_button {
+            gpios = <&gpio0 5 GPIO_ACTIVE_LOW>;
+        };
+    };
+};
