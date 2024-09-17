@@ -3,33 +3,27 @@
 #include <zephyr/drivers/gpio.h>
 
 static int configure_leds(void);
+static int devices_ready(void);
 
-#define HIGH_STATE 1
-#define LOW_STATE 0
-
-#define LED_EMB 2
-#define LED1_PIN 4
-#define LED2_PIN 5
-#define LED3_PIN 18
-
-static const struct device *gpio_device = DEVICE_DT_GET(DT_NODELABEL(gpio0));
+static const struct gpio_dt_spec embedded_led = GPIO_DT_SPEC_GET(DT_NODELABEL(embedded_led), gpios);
+static const struct gpio_dt_spec ext_led1 = GPIO_DT_SPEC_GET(DT_NODELABEL(ext_led1), gpios);
+static const struct gpio_dt_spec ext_led2 = GPIO_DT_SPEC_GET(DT_NODELABEL(ext_led2), gpios);
+static const struct gpio_dt_spec ext_led3 = GPIO_DT_SPEC_GET(DT_NODELABEL(ext_led3), gpios);
 
 int main()
 {
     int ret = 0;
-
-    if (!device_is_ready(gpio_device)) {
+    
+    if (!devices_ready()) {
         return -1;
     }
 
-    ret = configure_leds();
-
-    if (ret != 0) {
+    if (!configure_leds()) {
         return -1;
     }
 
     for (int i = 0; i < 10; i++) {
-        ret = gpio_pin_toggle(gpio_device, LED_EMB);
+        ret = gpio_pin_toggle_dt(&embedded_led);
         if (ret != 0) {
             return -1;
         }
@@ -37,21 +31,21 @@ int main()
     }
 
     while (true) {
-        ret = gpio_pin_toggle(gpio_device, LED1_PIN);
+        ret = gpio_pin_toggle_dt(&ext_led1);
         if (ret != 0) {
             return -1;
         }
 
         k_msleep(500);
 
-        ret = gpio_pin_toggle(gpio_device, LED2_PIN);
+        ret = gpio_pin_toggle_dt(&ext_led2);
         if (ret != 0) {
             return -1;
         }
 
         k_msleep(500);
 
-        ret = gpio_pin_toggle(gpio_device, LED3_PIN);
+        ret = gpio_pin_toggle_dt(&ext_led3);
         if (ret != 0) {
             return -1;
         }
@@ -59,29 +53,50 @@ int main()
         k_msleep(500);
     }
 
+    return 0;
 }
 
 static int configure_leds(void)
 {
-    int ret = gpio_pin_configure(gpio_device, LED1_PIN, GPIO_OUTPUT_ACTIVE);
+    int ret = gpio_pin_configure_dt(&ext_led1, GPIO_OUTPUT_ACTIVE);
     if (ret != 0) {
-        return ret;
+        return 0;
     }
 
-    ret = gpio_pin_configure(gpio_device, LED2_PIN, GPIO_OUTPUT_ACTIVE);
+    ret = gpio_pin_configure_dt(&ext_led2, GPIO_OUTPUT_ACTIVE);
     if (ret != 0) {
-        return ret;
+        return 0;
     }
     
-    ret = gpio_pin_configure(gpio_device, LED3_PIN, GPIO_OUTPUT_ACTIVE);
+    ret = gpio_pin_configure_dt(&ext_led3, GPIO_OUTPUT_ACTIVE);
     if (ret != 0) {
-        return ret;
+        return 0;
     }
 
-    ret = gpio_pin_configure(gpio_device, LED_EMB, GPIO_OUTPUT_ACTIVE);
+    ret = gpio_pin_configure_dt(&embedded_led, GPIO_OUTPUT_ACTIVE);
     if (ret != 0) {
-        return ret;
+        return 0;
     }
 
-    return 0;
+    return 1;
+}
+
+static int devices_ready(void) {
+    if (!device_is_ready(embedded_led.port)) {
+        return 0;
+    }
+
+    if (!device_is_ready(ext_led1.port)) {
+        return 0;
+    }
+
+    if (!device_is_ready(ext_led2.port)) {
+        return 0;
+    }
+
+    if (!device_is_ready(ext_led3.port)) {
+        return 0;
+    }
+    
+    return 1;
 }
