@@ -9,3 +9,4 @@ Projects made while learning ZephyrRTOS on ESP32 DevKitC
 - Blinky 01 - Blink 3 external LEDs and ESP32 embedded diode.
 - Blinky_PWM - Learn how to generate PWM signal and use it to fade an LED in and out.
 - Push_Button_Led 00 - Blink LED once button is clicked. Blinking is triggered in an interrupt.
+- ADC 00 - Connect potentiometer and read its values using ADC. Values are read continously and than send using printk.
