@@ -12,3 +12,4 @@ Projects made while learning ZephyrRTOS on ESP32 DevKitC
 - ADC 00 - Connect potentiometer and read its values using ADC. Values are read continously and than send using printk.
 - Wi-Fi 00 - Turn on net shell in .conf file, scan for Wi-Fi and connect to one.
 - Wi-Fi 01 - Scan for Wi-Fi using Zephyr API.
+- Wi-Fi 02 - Connect to specific Wi-Fi using Zephyr API.
