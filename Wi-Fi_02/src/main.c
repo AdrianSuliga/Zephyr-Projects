@@ -13,16 +13,15 @@
 
 struct net_mgmt_event_callback wifi_callback;
 
-bool is_connected = false; 
+bool is_connected = false;
 bool ryszard_found = false;
 
 void wifi_handler(struct net_mgmt_event_callback *cb, uint32_t event, struct net_if *iface)
 {
-    switch (event)
-    {
+    switch (event) {
     case NET_EVENT_WIFI_CONNECT_RESULT:
         printk("Connection attempt finished\n");
-        struct wifi_status *received_status = (struct wifi_status*)(cb->info);
+        struct wifi_status *received_status = (struct wifi_status *)(cb->info);
         if (received_status->conn_status == WIFI_STATUS_CONN_SUCCESS) {
             is_connected = true;
             printk("Connected\n");
@@ -34,16 +33,16 @@ void wifi_handler(struct net_mgmt_event_callback *cb, uint32_t event, struct net
 
     case NET_EVENT_WIFI_DISCONNECT_RESULT:
         is_connected = false;
-        printk("Disconnected, error: %d\n", *((int32_t*)(cb->info)));
+        printk("Disconnected, error: %d\n", *((int32_t *)(cb->info)));
         break;
 
     case NET_EVENT_WIFI_SCAN_RESULT:
-        uint8_t* data = (uint8_t*)(cb->info);
+        uint8_t *data = (uint8_t *)(cb->info);
 
-        if (!strncmp(data, "Ryszard", sizeof("Ryszard"))) {
+        if (!strncmp(data, "Stopki Nahidy 604", sizeof("Stopki Nahidy 604"))) {
             printk("Found Ryszard\n");
-            ryszard_found = true;
         }
+        ryszard_found = true;
         break;
 
     case NET_EVENT_WIFI_SCAN_DONE:
@@ -60,16 +59,16 @@ void wifi_handler(struct net_mgmt_event_callback *cb, uint32_t event, struct net
     }
 }
 
-int main() 
-{    
+int main()
+{
     struct net_if *network_interface;
     network_interface = net_if_get_default();
 
     struct wifi_connect_req_params wifi_params = {
-        .ssid = "Ryszard",
-        .ssid_length = sizeof("Ryszard") - 1,
-        .psk = "jestnatrello",
-        .psk_length = sizeof("jestnatrello") - 1,
+        .ssid = "Stopki Nahidy 604",
+        .ssid_length = sizeof("Stopki Nahidy 604") - 1,
+        .psk = "GrupaWielbicieliGenshina2137",
+        .psk_length = sizeof("GrupaWielbicieliGenshina2137") - 1,
         .band = 0,
         .security = WIFI_SECURITY_TYPE_PSK,
     };
@@ -96,6 +95,6 @@ int main()
         printk("Main running...\n");
         k_sleep(K_SECONDS(2));
     }
-    
+
     return 0;
 }
