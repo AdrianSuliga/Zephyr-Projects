@@ -13,3 +13,4 @@ Projects made while learning ZephyrRTOS on ESP32 DevKitC
 - Wi-Fi 00 - Turn on net shell in .conf file, scan for Wi-Fi and connect to one.
 - Wi-Fi 01 - Scan for Wi-Fi using Zephyr API.
 - Wi-Fi 02 - Connect to specific Wi-Fi using Zephyr API.
+- MQTT 00 - Connect to a broker in main thread, publish a message and subscribe to topic.
