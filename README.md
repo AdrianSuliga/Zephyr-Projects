@@ -15,3 +15,4 @@ Projects made while learning ZephyrRTOS on ESP32 DevKitC
 - Wi-Fi 02 - Connect to specific Wi-Fi using Zephyr API.
 - MQTT 00 - Connect to a broker in main thread, publish a message and subscribe to topic.
 - Timer 00 - Use k_uptime_get to measure time since booting the board
+- ZBUS 00 - Use ZBUS to send data between 2 threads
